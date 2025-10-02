@@ -1,7 +1,7 @@
 // src/redux/slice/client.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as clientService from "../service/Client";
-import {clientModel } from "../../models/Diploma";
+import {clientModel,clientCreateModel, clientDiplomaModelReport } from "../../models/Diploma";
 
 
 export const fetchClients = createAsyncThunk(
@@ -9,19 +9,19 @@ export const fetchClients = createAsyncThunk(
   async (filters = {}, thunkAPI) => {
     try {
       const data = await clientService.fetchClients(filters);
-      console.log(data.data,'slice')
+    
       const clientList = data.data.results.map((prod) => clientModel(prod));
-      console.log(clientList,'slice')
+      
       if (data.next){
         return {
           clientList,
           next:true
         }
       }
-      console.log('before errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+      
       return clientList; 
     } catch (err) {
-       console.log('after errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+      
       return thunkAPI.rejectWithValue(err.response?.data?.message || "فشل تحميل المنتجات");
     }
   }
@@ -33,9 +33,10 @@ export const createClient = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const data = await clientService.createClient(formData);
-     const User = clientModel(data.user);
-     console.log(data)
-      return User;
+      console.log(data?.data?.data,'ssssssssssssssssssssssssssssssssssssssssssssssssssss')
+     const User = clientCreateModel(data?.data?.data);
+       localStorage.setItem("newClient", JSON.stringify(User)); 
+     return User;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || "فشل التسجيل");
     }
@@ -75,7 +76,9 @@ export const reportDetail = createAsyncThunk(
   async (params = {}, thunkAPI) => {
     try {
       const data = await clientService.reportDetail(params);
-      const clientDetail = clientModel(data.data);
+      console.log(data,'datafrom selice')
+      const clientDetail = data.data.results.map((prod) => clientDiplomaModelReport(prod));
+      
       return clientDetail;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || "فشل تحميل التقرير");
@@ -94,6 +97,8 @@ const clientSlice = createSlice({
     categories: [],
     clients:[],
     clientDetail:null,
+    newClient: JSON.parse(localStorage.getItem("newClient")) || null,
+    
   },
   reducers: {
     resetProductState: (state) => {
@@ -104,18 +109,6 @@ const clientSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-        state.categories = action.payload;
-      })
-      .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
        .addCase(fetchClients.pending,(state) => {
         state.loading = true;
       })
@@ -138,7 +131,18 @@ const clientSlice = createSlice({
       .addCase(fetchProductDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+       .addCase(createClient.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.newClient = action.payload;
+        localStorage.setItem("newClient", JSON.stringify(action.payload));
+      })
+      .addCase(createClient.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        localStorage.removeItem("newClient");
+      })
   },
 });
 

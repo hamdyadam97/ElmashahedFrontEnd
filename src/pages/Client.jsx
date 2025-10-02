@@ -4,14 +4,14 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDiplomas } from '../redux/slice/Diploma';
 import { createClient } from "../redux/slice/Client";
+import { useNavigate } from "react-router-dom";
 // بيانات الدبلومات كمثال
 
 const ClientForm = () => {
   const { diplomas = [], loading = false, error = null } =
     useSelector((state) => state.diploma || {});
   const dispatch = useDispatch();
-
-
+  const navigate = useNavigate(); // تعريف navigate
   useEffect(() => {
     dispatch(fetchDiplomas());
   }, [dispatch]);
@@ -45,10 +45,13 @@ const ClientForm = () => {
   const handleSubmit = (values, { resetForm }) => {
     dispatch(createClient(values))
       .unwrap()
-      .then(() => {
-        setSuccess(true);
+      .then((data) => {
+        setSuccess(true);       // إظهار رسالة النجاح
         resetForm();
-        setTimeout(() => setSuccess(false), 5000);
+        setTimeout(() => {
+          setSuccess(false);    // إخفاء الرسالة
+          navigate("/newclient", { state: { createdClient: data } });  // التوجيه بعد 5 ثواني
+        }, 5000);
       })
       .catch((err) => {
         console.log("حدث خطأ عند إضافة المشهد:", err);
@@ -252,8 +255,8 @@ const ClientForm = () => {
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
               </svg>
               <div>
-                <h3 className="font-semibold">تم إضافة المشهد بنجاح!</h3>
-                <p className="text-sm">تم حفظ بيانات المشهد في النظام بنجاح.</p>
+               <h3 className="font-semibold">تم إضافة المشهد بنجاح!</h3>
+                <p className="text-sm">سيتم التوجيه تلقائياً بعد 5 ثواني...</p>
               </div>
             </div>
           </div>

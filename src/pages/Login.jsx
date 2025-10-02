@@ -47,7 +47,7 @@ const handleSubmit = async (values, { resetForm, setSubmitting }) => {
   try {
     const userData = await dispatch(loginUser(values)).unwrap();
     login(userData); // هنا تحدث الـ Context
-    navigate("/client");
+    navigate("/");
     resetForm();
   } catch (err) {
     console.log("خطأ في تسجيل الدخول:", err);

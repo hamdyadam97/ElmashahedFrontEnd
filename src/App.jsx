@@ -10,6 +10,8 @@ import ClientsPage from './pages/ClientsPage';
 import ProtectedRoute from './ProtectedRoute';
 import DetailedClientReport from './pages/DetailedClientReport';
 import SuperuserRoute from './SuperuserRoute';
+import NewClientsPage from './pages/NewClient';
+import GuestRoute from './GuestRoute';
 function App() {
   
 
@@ -17,7 +19,6 @@ function App() {
     <Router>
       <MainLayout>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route
             path="/signup"
             element={
@@ -26,11 +27,18 @@ function App() {
               </SuperuserRoute>
             }
           />
-          <Route path="/login" element={<Login />} />
-           {/* <Route path="/client" element={<ClientForm />} />
-           <Route path="/ClientPage" element={<ClientsPage />} /> */}
            <Route
-            path="/client"
+            path="/login"
+            element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            }
+          />
+          {/* <Route path="/login" element={<Login />} /> */}
+          
+           <Route
+            path="/"
             element={
               <ProtectedRoute>
                 <ClientForm />
@@ -53,7 +61,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+            <Route
+            path="/newclient"
+            element={
+              <ProtectedRoute>
+                <NewClientsPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+        
       </MainLayout>
     </Router>
   )

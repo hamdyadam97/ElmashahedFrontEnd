@@ -51,14 +51,14 @@ const Navbar = () => {
                     👋 مرحباً، {user.full_name}
                   </span>
 
-                     <Link to="/client" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    إضافة عميل
+                     <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2">
+                    إضافة مشهد
                   </Link>
                   <Link to="/clientpage" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    قائمة العملاء
+                    قائمة المشاهد 
                   </Link>
                   <Link to="/detail" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    تقارير العملاء
+                    تقارير المشاهد 
                   </Link>
 
                   {user.is_superuser && (
@@ -66,7 +66,7 @@ const Navbar = () => {
                       to="/signup"
                       className="btn-primary me-4"
                     >
-                      إنشاء حساب
+                         انشاء حساب موظف
                     </Link>
                   )}
 
@@ -120,14 +120,14 @@ const Navbar = () => {
               <span className="text-blue-600 font-medium">
                 👋 مرحباً، {user.full_name}
               </span>
-   <Link to="/client" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    إضافة عميل
+   <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2">
+                    إضافة مشهد
                   </Link>
                   <Link to="/clientpage" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    قائمة العملاء
+                    قائمة المشاهد
                   </Link>
                   <Link to="/detail" className="text-gray-700 hover:text-blue-600 px-3 py-2">
-                    تقارير العملاء
+                    تقارير المشاهد
                   </Link>
               {user.is_superuser && (
                 <Link
@@ -135,7 +135,7 @@ const Navbar = () => {
                   className="btn-primary"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  إنشاء حساب
+                  إنشاء حساب موظف 
                 </Link>
               )}
 

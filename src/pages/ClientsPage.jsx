@@ -36,10 +36,10 @@ const ClientsPage = () => {
     dispatch(fetchClients(filters))
       .unwrap()
       .then((data) => {
-          console.log(data,'sssssssppppppppppppppppppppppppppppppp')
+         
         setClients(Array.isArray(data) ? data : []);
         setTotalItems(data.count || data.length);
-        console.log(data,'sssssssppppppppppppppppppppppppppppppp')
+       
       })
       .catch((err) => console.error(err));
   };

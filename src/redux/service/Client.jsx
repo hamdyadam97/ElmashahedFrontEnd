@@ -4,13 +4,14 @@ import api from "../../api/Api"; // بدلاً من axios
 
 export const createClient = async (formData) => {
   const res = await api.post("user/clients/create/", formData);
+   
   return res.data;
 };
 
 export const fetchClients = async (filters = {}) => {
  
   const res = await api.get('user/clients/', { params: filters });
-  console.log(res.data,'services')
+ 
   return res.data;
 };
 
