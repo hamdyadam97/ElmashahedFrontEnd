@@ -36,10 +36,10 @@ const ClientsPage = () => {
     dispatch(fetchClients(filters))
       .unwrap()
       .then((data) => {
-         
+
         setClients(Array.isArray(data) ? data : []);
         setTotalItems(data.count || data.length);
-       
+
       })
       .catch((err) => console.error(err));
   };
@@ -79,21 +79,20 @@ const ClientsPage = () => {
           className="border px-4 py-2 rounded"
         >
           <option value="">جميع القطاعات</option>
-          <option value="government">حكومي</option>
-          <option value="private">خاص</option>
-          <option value="education">تعليمي</option>
-          <option value="health">صحي</option>
-          <option value="tech">تقني</option>
-
-          <option value="non_profit"> غير ربح</option>
-          <option value="finance">مالي</option>
-          <option value="trade">تجاري</option>
-          <option value="industry">صناعي</option>
-          <option value="services">خدمي</option>
-         
-
-        
-        
+          <option value="mod">وزارة الدفاع</option>
+          <option value="moi">وزارة الداخلية</option>
+          <option value="emergency_forces">قوات الطوارئ الخاصة</option>
+          <option value="security_forces">قوات أمن المنشآت</option>
+          <option value="passports">الإدارة العامة للجوازات</option>
+          <option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
+          <option value="royal_guard">الحرس الملكي السعودي</option>
+          <option value="national_guard">وزارة الحرس الوطني</option>
+          <option value="civil_defense">الدفاع المدني</option>
+          <option value="special_security_forces">قوات الأمن الخاصة</option>
+          <option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
+          <option value="prisons">المديرية العامة للسجون</option>
+          <option value="aramco">أرامكو السعودية</option>
+          <option value="environmental_security">القوات الخاصة للأمن البيئي</option>
         </select>
         <select
           value={areaFilter}
@@ -107,7 +106,7 @@ const ClientsPage = () => {
           <option value="riyadh">الرياض</option>
           <option value="makkah">مكة</option>
           <option value="madinah">المدينة المنورة</option>
-          
+
 
           <option value="qassim">القصيم</option>
           <option value="eastern">المنطقة الشرقية</option>
@@ -149,28 +148,28 @@ const ClientsPage = () => {
               </td>
               <td className="border p-2">{client.area}</td>
               <td className="border p-2"><span key={client.diploma.id} className="bg-purple-100 text-purple-800 px-2 py-1 rounded mr-1">{client.diploma.name}</span>
-                 
+
               </td>
               <td className="border p-2 space-x-1">
                 <button onClick={() => alert(client.name)} className="text-blue-600">عرض</button>
                 <button onClick={() => handleDelete(client.id)} className="text-red-600">حذف</button>
                 <div className="flex gap-2 mt-4">
-    <a
-      href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
-     
-      target="_blank"
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-    >
-      عرض الملف
-    </a>
-    <a
-       href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
-      download={`client_${client.id}.pdf`}
-      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-    >
-      تحميل الملف
-    </a>
-  </div>
+                  <a
+                    href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
+
+                    target="_blank"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  >
+                    عرض الملف
+                  </a>
+                  <a
+                    href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
+                    download={`client_${client.id}.pdf`}
+                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                  >
+                    تحميل الملف
+                  </a>
+                </div>
               </td>
             </tr>
           ))}
@@ -179,9 +178,9 @@ const ClientsPage = () => {
 
       {/* Pagination */}
       <div className="flex justify-between items-center">
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev-1)} className="px-3 py-1 border rounded">السابق</button>
+        <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="px-3 py-1 border rounded">السابق</button>
         <span>صفحة {currentPage} من {totalPages}</span>
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev+1)} className="px-3 py-1 border rounded">التالي</button>
+        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="px-3 py-1 border rounded">التالي</button>
       </div>
     </div>
   );
