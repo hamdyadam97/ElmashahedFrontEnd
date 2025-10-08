@@ -141,17 +141,21 @@ const ClientForm = () => {
                       name="sector"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     >
-                      <option value="">اختر القطاع</option>
-                      <option value="government">حكومي</option>
-                      <option value="private">خاص</option>
-                      <option value="non_profit">غير ربحي</option>
-                      <option value="education">تعليمي</option>
-                      <option value="health">صحي</option>
-                      <option value="tech">تقني</option>
-                      <option value="finance">مالي</option>
-                      <option value="trade">تجاري</option>
-                      <option value="industry">صناعي</option>
-                      <option value="services">خدمي</option>
+                    <option value="">جميع القطاعات</option>
+<option value="mod">وزارة الدفاع</option>
+<option value="moi">وزارة الداخلية</option>
+<option value="emergency_forces">قوات الطوارئ الخاصة</option>
+<option value="security_forces">قوات أمن المنشآت</option>
+<option value="passports">الإدارة العامة للجوازات</option>
+<option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
+<option value="royal_guard">الحرس الملكي السعودي</option>
+<option value="national_guard">وزارة الحرس الوطني</option>
+<option value="civil_defense">الدفاع المدني</option>
+<option value="special_security_forces">قوات الأمن الخاصة</option>
+<option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
+<option value="prisons">المديرية العامة للسجون</option>
+<option value="aramco">أرامكو السعودية</option>
+<option value="environmental_security">القوات الخاصة للأمن البيئي</option>
                     </Field>
                     <ErrorMessage name="sector" component="div" className="text-red-500 text-sm mt-1" />
                   </div>

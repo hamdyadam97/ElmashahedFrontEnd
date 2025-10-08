@@ -190,11 +190,21 @@ const dispatch = useDispatch();
           className="border p-2 rounded"
         />
         <select name="sector" value={filters.sector} onChange={handleFilterChange} className="border p-2 rounded">
-          <option value="">جميع القطاعات</option>
-          <option value="industry">صناعة</option>
-          <option value="finance">مالية</option>
-          <option value="education">تعليم</option>
-          <option value="tech">تقنية</option>
+         <option value="">جميع القطاعات</option>
+<option value="mod">وزارة الدفاع</option>
+<option value="moi">وزارة الداخلية</option>
+<option value="emergency_forces">قوات الطوارئ الخاصة</option>
+<option value="security_forces">قوات أمن المنشآت</option>
+<option value="passports">الإدارة العامة للجوازات</option>
+<option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
+<option value="royal_guard">الحرس الملكي السعودي</option>
+<option value="national_guard">وزارة الحرس الوطني</option>
+<option value="civil_defense">الدفاع المدني</option>
+<option value="special_security_forces">قوات الأمن الخاصة</option>
+<option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
+<option value="prisons">المديرية العامة للسجون</option>
+<option value="aramco">أرامكو السعودية</option>
+<option value="environmental_security">القوات الخاصة للأمن البيئي</option>
         </select>
         <select name="area" value={filters.area} onChange={handleFilterChange} className="border p-2 rounded">
           <option value="">جميع المناطق</option>
