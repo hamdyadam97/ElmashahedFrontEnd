@@ -151,8 +151,8 @@ const ClientsPage = () => {
 
               </td>
               <td className="border p-2 space-x-1">
-                <button onClick={() => alert(client.name)} className="text-blue-600">عرض</button>
-                <button onClick={() => handleDelete(client.id)} className="text-red-600">حذف</button>
+                
+                {/* <button onClick={() => handleDelete(client.id)} className="text-red-600">حذف</button> */}
                 <div className="flex gap-2 mt-4">
                   <a
                     href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
@@ -162,6 +162,7 @@ const ClientsPage = () => {
                   >
                     عرض الملف
                   </a>
+                  
                   <a
                     href={`http://localhost:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
                     download={`client_${client.id}.pdf`}

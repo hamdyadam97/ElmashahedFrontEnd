@@ -24,6 +24,7 @@ const ClientForm = () => {
     email: "",
     sector: "",
     area: "",
+    institute: "",
     diplomas_ids: [],
   };
 
@@ -38,6 +39,7 @@ const ClientForm = () => {
     email: Yup.string().email("بريد إلكتروني غير صالح").required("مطلوب"),
     sector: Yup.string().required("مطلوب"),
     area: Yup.string().required("مطلوب"),
+     institute: Yup.string().required("مطلوب"), // بدل area
   });
 
 
@@ -141,21 +143,21 @@ const ClientForm = () => {
                       name="sector"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     >
-                    <option value="">جميع القطاعات</option>
-<option value="mod">وزارة الدفاع</option>
-<option value="moi">وزارة الداخلية</option>
-<option value="emergency_forces">قوات الطوارئ الخاصة</option>
-<option value="security_forces">قوات أمن المنشآت</option>
-<option value="passports">الإدارة العامة للجوازات</option>
-<option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
-<option value="royal_guard">الحرس الملكي السعودي</option>
-<option value="national_guard">وزارة الحرس الوطني</option>
-<option value="civil_defense">الدفاع المدني</option>
-<option value="special_security_forces">قوات الأمن الخاصة</option>
-<option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
-<option value="prisons">المديرية العامة للسجون</option>
-<option value="aramco">أرامكو السعودية</option>
-<option value="environmental_security">القوات الخاصة للأمن البيئي</option>
+                      <option value="">جميع القطاعات</option>
+                      <option value="mod">وزارة الدفاع</option>
+                      <option value="moi">وزارة الداخلية</option>
+                      <option value="emergency_forces">قوات الطوارئ الخاصة</option>
+                      <option value="security_forces">قوات أمن المنشآت</option>
+                      <option value="passports">الإدارة العامة للجوازات</option>
+                      <option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
+                      <option value="royal_guard">الحرس الملكي السعودي</option>
+                      <option value="national_guard">وزارة الحرس الوطني</option>
+                      <option value="civil_defense">الدفاع المدني</option>
+                      <option value="special_security_forces">قوات الأمن الخاصة</option>
+                      <option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
+                      <option value="prisons">المديرية العامة للسجون</option>
+                      <option value="aramco">أرامكو السعودية</option>
+                      <option value="environmental_security">القوات الخاصة للأمن البيئي</option>
                     </Field>
                     <ErrorMessage name="sector" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
@@ -184,6 +186,27 @@ const ClientForm = () => {
                     </Field>
                     <ErrorMessage name="area" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
+
+                  <div className="form-group">
+  <label className="block text-sm font-semibold text-gray-700 mb-2">
+    المعهد <span className="text-red-500">*</span>
+  </label>
+  <Field
+    as="select"
+    name="institute"
+    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+  >
+    <option value="">اختر المعهد</option>
+    <option value="1">معهد الفاو المتقدم العالي للتدريب</option>
+    <option value="2">معهد آفاق التطور العالي للتدريب</option>
+    <option value="3">معهد المورد الوافي العالي للتدريب</option>
+    <option value="4">المعهد الأهلي العالي للتدريب</option>
+    <option value="5">معهد القمة الدائمة العالي للتدريب</option>
+    <option value="6">معهد الفاو التخصصي العالي للتدريب</option>
+  </Field>
+  <ErrorMessage name="institute" component="div" className="text-red-500 text-sm mt-1" />
+</div>
+
                 </div>
               </div>
 
@@ -194,36 +217,36 @@ const ClientForm = () => {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">الشهادات والدبلومات</h2>
                   <div className="border border-gray-300 rounded-lg p-4 multi-select bg-gray-50">
-                    
 
-                    
-                      <FieldArray name="diplomas_ids">
-                        {({ push, remove, form }) => (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {diplomas.map((diploma) => {
-                              const isChecked = form.values.diplomas_ids.includes(diploma.id);
-                              return (
-                                <label key={diploma.id} className="flex items-center p-3 bg-white rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
-                                  <input
-                                    type="checkbox"
-                                    className="ml-3 text-blue-600 focus:ring-blue-500"
-                                    checked={isChecked}
-                                    onChange={() => {
-                                      if (isChecked) {
-                                        remove(form.values.diplomas_ids.indexOf(diploma.id));
-                                      } else {
-                                        push(diploma.id);
-                                      }
-                                    }}
-                                  />
-                                  <span className="text-gray-700">{diploma.name}</span>
-                                </label>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </FieldArray>
-                    
+
+
+                    <FieldArray name="diplomas_ids">
+                      {({ push, remove, form }) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {diplomas.map((diploma) => {
+                            const isChecked = form.values.diplomas_ids.includes(diploma.id);
+                            return (
+                              <label key={diploma.id} className="flex items-center p-3 bg-white rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                                <input
+                                  type="checkbox"
+                                  className="ml-3 text-blue-600 focus:ring-blue-500"
+                                  checked={isChecked}
+                                  onChange={() => {
+                                    if (isChecked) {
+                                      remove(form.values.diplomas_ids.indexOf(diploma.id));
+                                    } else {
+                                      push(diploma.id);
+                                    }
+                                  }}
+                                />
+                                <span className="text-gray-700">{diploma.name}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </FieldArray>
+
                     {values.diplomas_ids.length > 0 && (
                       <p className="mt-2 text-gray-600">
                         تم اختيار {values.diplomas_ids.length} دبلومات
@@ -259,7 +282,7 @@ const ClientForm = () => {
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
               </svg>
               <div>
-               <h3 className="font-semibold">تم إضافة المشهد بنجاح!</h3>
+                <h3 className="font-semibold">تم إضافة المشهد بنجاح!</h3>
                 <p className="text-sm">سيتم التوجيه تلقائياً بعد 5 ثواني...</p>
               </div>
             </div>
