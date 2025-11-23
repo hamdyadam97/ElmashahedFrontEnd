@@ -1,45 +1,8 @@
 import { useState, useEffect } from "react";
 import { reportDetail } from "../redux/slice/Client";
 import { useDispatch } from "react-redux";
-
-// export default function DetailedClientReport({ filters }) {
-//   const [report, setReport] = useState([]);
-// const dispatch = useDispatch();
-//   useEffect(() => {
-//     dispatch(reportDetail(filters))
-//       .unwrap()
-//       .then((data) => {
-//         console.log(data,'gggggggggggggggggg')
-//         setReport(data); 
-//       })
-//       .catch(err => console.error(err));
-//   }, [filters]);
-
-
-//   if (!report.length) return <div>لا توجد بيانات.</div>;
-
-//   return (
-//     <div>
-//       <h2>تقرير العملاء المفصل</h2>
-//       {report.map(client => (
-//         <div key={client.id} className="border p-4 mb-4 rounded shadow">
-//           <h3>{client.name} ({client.identity_number})</h3>
-//           <p>الهاتف: {client.phone_number} | الإيميل: {client.email}</p>
-//           <p>الفرع: {client.area} | القطاع: {client.sector}</p>
-//           <p>أضيف بواسطة: {client.added_by}</p>
-//           <h4>الدبلومات المسجلة:</h4>
-      
-               
-
-//                 <p>أضيف بواسطة: {client.diploma.name }</p>
-             
-          
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
+import { jsPDF } from 'jspdf';
+import { autoTable } from 'jspdf-autotable';
 
 
 
@@ -64,25 +27,28 @@ const DetailedClientReport = () => {
     sector: "",
     area: "",
     diploma: "",
+    added_by: "",
+    date_from: "",
+    date_to: "",
   });
   const [loading, setLoading] = useState(false);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
 
   const fetchData = async () => {
-  setLoading(true);
-  try {
-    // call API with dispatch
-    const data = await dispatch(reportDetail(filters)).unwrap();
-    setData(data);
-  } catch (err) {
-    console.error(err);
-    setData([]); // في حالة الخطأ نفضي البيانات
-  } finally {
-    setLoading(false);
-  }
-};
- 
+    setLoading(true);
+    try {
+      // call API with dispatch
+      const data = await dispatch(reportDetail(filters)).unwrap();
+      setData(data);
+    } catch (err) {
+      console.error(err);
+      setData([]); // في حالة الخطأ نفضي البيانات
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [filters]);
@@ -103,41 +69,97 @@ const dispatch = useDispatch();
     });
   };
 
-  const exportToCSV = () => {
-    const headers = [
-      "اسم العميل",
-      "رقم الهوية",
-      "الهاتف",
-      "البريد الإلكتروني",
-      "القطاع",
-      "المنطقة",
-      "الدبلوم",
-      "تاريخ الدبلوم",
-      "أضيف بواسطة",
-    ];
-    const csvContent = [
-      headers.join(","),
-      ...data.map((record) =>
-        [
-          record.client_name,
-          record.identity_number,
-          record.phone_number,
-          record.email,
-          sectorTranslations[record.sector] || record.sector,
-          areaTranslations[record.area] || record.area,
-          record.diploma_name,
-          new Date(record.diploma_date).toLocaleDateString("ar-SA"),
-          record.added_by_name,
-        ].join(",")
-      ),
-    ].join("\n");
+const exportToCSV = () => {
+  if (!data.length) {
+    alert("لا توجد بيانات للتصدير");
+    return;
+  }
 
-    const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `تقرير_العملاء_${new Date().toISOString().split("T")[0]}.csv`;
-    link.click();
-  };
+  
+
+  const headers = [
+    "اسم العميل",
+    "رقم الهوية",
+    "الهاتف",
+    "البريد الإلكتروني",
+    "القطاع",
+    "المنطقة",
+    "الدبلوم",
+    "تاريخ الدبلوم",
+    "أضيف بواسطة",
+  ];
+
+  const csvContent = [
+    headers.join(","),
+    ...data.map((record) => {
+      const diplomaName = record.diploma?.name || ""; // ✅ تأكد من وجود اسم الدبلوم
+      const diplomaDate = record.diploma?.added_at
+        ? new Date(record.diploma.added_at).toLocaleDateString("ar-SA")
+        : ""; // ✅ لو التاريخ موجود
+      const addedBy = record.diploma?.added_by_name || record.added_by_name || ""; // ✅ المستخدم اللي أضاف
+
+      return [
+        record.client_name,
+        record.identity_number,
+        record.phone_number,
+        record.email,
+        sectorTranslations[record.sector] || record.sector,
+        areaTranslations[record.area] || record.area,
+        diplomaName,
+        diplomaDate,
+        addedBy,
+      ].join(",");
+    }),
+  ].join("\n");
+
+  const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `تقرير_العملاء_${new Date().toISOString().split("T")[0]}.csv`;
+  link.click();
+};
+
+
+const exportToPDF = () => {
+  const doc = new jsPDF("p", "pt", "a4");
+  doc.setFontSize(16);
+  doc.text("تقرير العملاء والدبلومات", 200, 30);
+
+  const headers = [
+    "اسم العميل",
+    "رقم الهوية",
+    "الهاتف",
+    "البريد الإلكتروني",
+    "القطاع",
+    "المنطقة",
+    "الدبلوم",
+    "تاريخ الدبلوم",
+    "أضيف بواسطة",
+  ];
+
+  const tableData = data.map((record) => [
+    record.client_name,
+    record.identity_number,
+    record.phone_number,
+    record.email,
+    sectorTranslations[record.sector] || record.sector,
+    areaTranslations[record.area] || record.area,
+    record.diploma_name,
+    new Date(record.diploma_date).toLocaleDateString("ar-SA"),
+    record.added_by,
+  ]);
+
+  autoTable(doc, {
+    head: [headers],
+    body: tableData,
+    startY: 50,
+    styles: { fontSize: 10, cellPadding: 4 },
+    headStyles: { fillColor: [100, 100, 255] },
+  });
+
+  doc.save(`تقرير_العملاء_${new Date().toISOString().split("T")[0]}.pdf`);
+};
+
 
   const printReport = () => window.print();
 
@@ -157,6 +179,13 @@ const dispatch = useDispatch();
           <button onClick={printReport} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
             🖨️ طباعة
           </button>
+          <button
+  onClick={exportToPDF}
+  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+>
+  📄 تصدير PDF
+</button>
+
         </div>
       </header>
 
@@ -190,21 +219,21 @@ const dispatch = useDispatch();
           className="border p-2 rounded"
         />
         <select name="sector" value={filters.sector} onChange={handleFilterChange} className="border p-2 rounded">
-         <option value="">جميع القطاعات</option>
-<option value="mod">وزارة الدفاع</option>
-<option value="moi">وزارة الداخلية</option>
-<option value="emergency_forces">قوات الطوارئ الخاصة</option>
-<option value="security_forces">قوات أمن المنشآت</option>
-<option value="passports">الإدارة العامة للجوازات</option>
-<option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
-<option value="royal_guard">الحرس الملكي السعودي</option>
-<option value="national_guard">وزارة الحرس الوطني</option>
-<option value="civil_defense">الدفاع المدني</option>
-<option value="special_security_forces">قوات الأمن الخاصة</option>
-<option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
-<option value="prisons">المديرية العامة للسجون</option>
-<option value="aramco">أرامكو السعودية</option>
-<option value="environmental_security">القوات الخاصة للأمن البيئي</option>
+          <option value="">جميع القطاعات</option>
+          <option value="mod">وزارة الدفاع</option>
+          <option value="moi">وزارة الداخلية</option>
+          <option value="emergency_forces">قوات الطوارئ الخاصة</option>
+          <option value="security_forces">قوات أمن المنشآت</option>
+          <option value="passports">الإدارة العامة للجوازات</option>
+          <option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
+          <option value="royal_guard">الحرس الملكي السعودي</option>
+          <option value="national_guard">وزارة الحرس الوطني</option>
+          <option value="civil_defense">الدفاع المدني</option>
+          <option value="special_security_forces">قوات الأمن الخاصة</option>
+          <option value="drug_control">المديرية العامة لمكافحة المخدرات</option>
+          <option value="prisons">المديرية العامة للسجون</option>
+          <option value="aramco">أرامكو السعودية</option>
+          <option value="environmental_security">القوات الخاصة للأمن البيئي</option>
         </select>
         <select name="area" value={filters.area} onChange={handleFilterChange} className="border p-2 rounded">
           <option value="">جميع المناطق</option>
@@ -220,6 +249,35 @@ const dispatch = useDispatch();
           onChange={handleFilterChange}
           className="border p-2 rounded"
         />
+        <input
+    name="added_by"
+    placeholder="أضيف بواسطة"
+    value={filters.added_by}
+    onChange={handleFilterChange}
+    className="border p-2 rounded"
+  />
+
+  {/* 🔸 فلاتر التاريخ */}
+  <div className="flex flex-col">
+    <label className="text-sm text-gray-600">من تاريخ</label>
+    <input
+      type="date"
+      name="date_from"
+      value={filters.date_from}
+      onChange={handleFilterChange}
+      className="border p-2 rounded"
+    />
+  </div>
+  <div className="flex flex-col">
+    <label className="text-sm text-gray-600">إلى تاريخ</label>
+    <input
+      type="date"
+      name="date_to"
+      value={filters.date_to}
+      onChange={handleFilterChange}
+      className="border p-2 rounded"
+    />
+     </div>
         <button onClick={clearFilters} className="bg-gray-500 text-white px-4 py-2 rounded mt-2 md:mt-0">مسح الفلاتر</button>
       </div>
 

@@ -15,6 +15,8 @@ export let diolomaModel = (diploma) => {
     id:diploma.id,
     name: diploma.name,
     date: diploma.date,
+    type:diploma.attendance_mode,
+    selectedType:diploma.attendance_mode
    
   };
 };

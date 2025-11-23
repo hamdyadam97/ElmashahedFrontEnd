@@ -16,7 +16,7 @@ const ClientForm = () => {
     dispatch(fetchDiplomas());
   }, [dispatch]);
   const [success, setSuccess] = useState(false);
-
+  console.log(diplomas, 'ssssssssssssssssssss')
   const initialValues = {
     name: "",
     identity_number: "",
@@ -39,7 +39,7 @@ const ClientForm = () => {
     email: Yup.string().email("بريد إلكتروني غير صالح").required("مطلوب"),
     sector: Yup.string().required("مطلوب"),
     area: Yup.string().required("مطلوب"),
-     institute: Yup.string().required("مطلوب"), // بدل area
+    institute: Yup.string().required("مطلوب"), // بدل area
   });
 
 
@@ -188,24 +188,24 @@ const ClientForm = () => {
                   </div>
 
                   <div className="form-group">
-  <label className="block text-sm font-semibold text-gray-700 mb-2">
-    المعهد <span className="text-red-500">*</span>
-  </label>
-  <Field
-    as="select"
-    name="institute"
-    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
-  >
-    <option value="">اختر المعهد</option>
-    <option value="1">معهد الفاو المتقدم العالي للتدريب</option>
-    <option value="2">معهد آفاق التطور العالي للتدريب</option>
-    <option value="3">معهد المورد الوافي العالي للتدريب</option>
-    <option value="4">المعهد الأهلي العالي للتدريب</option>
-    <option value="5">معهد القمة الدائمة العالي للتدريب</option>
-    <option value="6">معهد الفاو التخصصي العالي للتدريب</option>
-  </Field>
-  <ErrorMessage name="institute" component="div" className="text-red-500 text-sm mt-1" />
-</div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      المعهد <span className="text-red-500">*</span>
+                    </label>
+                    <Field
+                      as="select"
+                      name="institute"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                    >
+                      <option value="">اختر المعهد</option>
+                      <option value="1">معهد الفاو المتقدم العالي للتدريب</option>
+                      <option value="2">معهد آفاق التطور العالي للتدريب</option>
+                      <option value="3">معهد المورد الوافي العالي للتدريب</option>
+                      <option value="4">المعهد الأهلي العالي للتدريب</option>
+                      <option value="5">معهد القمة الدائمة العالي للتدريب</option>
+                      <option value="6">معهد الفاو التخصصي العالي للتدريب</option>
+                    </Field>
+                    <ErrorMessage name="institute" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
 
                 </div>
               </div>
@@ -219,33 +219,61 @@ const ClientForm = () => {
                   <div className="border border-gray-300 rounded-lg p-4 multi-select bg-gray-50">
 
 
-
                     <FieldArray name="diplomas_ids">
                       {({ push, remove, form }) => (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
                           {diplomas.map((diploma) => {
-                            const isChecked = form.values.diplomas_ids.includes(diploma.id);
+                            const index = form.values.diplomas_ids.findIndex(d => d.id === diploma.id);
+                            const isChecked = index !== -1;
+
                             return (
-                              <label key={diploma.id} className="flex items-center p-3 bg-white rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
-                                <input
-                                  type="checkbox"
-                                  className="ml-3 text-blue-600 focus:ring-blue-500"
-                                  checked={isChecked}
-                                  onChange={() => {
-                                    if (isChecked) {
-                                      remove(form.values.diplomas_ids.indexOf(diploma.id));
-                                    } else {
-                                      push(diploma.id);
-                                    }
-                                  }}
-                                />
-                                <span className="text-gray-700">{diploma.name}</span>
-                              </label>
-                            );
+                              <div key={diploma.id} className="p-3 border rounded mb-2">
+                                <label className="flex items-center cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => {
+                                      if (isChecked) {
+                                        remove(index);
+                                      } else {
+                                        push({
+                                          id: diploma.id,
+                                          name: diploma.name,
+                                          type: diploma.type,
+                                          selectedType: diploma.type === "hybrid" ? "" : diploma.type
+                                        });
+                                      }
+                                    }}
+                                    className="mr-2"
+                                  />
+                                  {diploma.name}
+                                </label>
+
+                                {isChecked && diploma.type === "hybrid" && (
+                                  <Field
+                                    as="select"
+                                    name={`diplomas_ids.${index}.selectedType`}
+                                    className="mt-2 border px-2 py-1 rounded"
+                                  >
+                                    <option value="">اختر النوع</option>
+                                    <option value="hadiri">حضوري</option>
+                                    <option value="online">أونلاين</option>
+                                  </Field>
+                                )}
+
+                                {isChecked && diploma.type !== "hybrid" && (
+                                  <p className="text-sm mt-1">
+                                    نوع التنفيذ: <strong>{diploma.type === "waf" ? "واف" : "أونلاين"}</strong>
+                                  </p>
+                                )}
+                              </div>
+                            )
                           })}
                         </div>
                       )}
                     </FieldArray>
+
+
 
                     {values.diplomas_ids.length > 0 && (
                       <p className="mt-2 text-gray-600">
