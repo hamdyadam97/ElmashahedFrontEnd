@@ -143,7 +143,7 @@ const ClientForm = () => {
                       name="sector"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
                     >
-                      <option value="">جميع القطاعات</option>
+                      <option value=""> اختر قطاع</option>
                       <option value="mod">وزارة الدفاع</option>
                       <option value="moi">وزارة الداخلية</option>
                       <option value="emergency_forces">قوات الطوارئ الخاصة</option>
