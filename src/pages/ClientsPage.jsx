@@ -78,7 +78,7 @@ const ClientsPage = () => {
           }}
           className="border px-4 py-2 rounded"
         >
-          <option value="">جميع القطاعات</option>
+          <option value="">اختر قطاع</option>
           <option value="mod">وزارة الدفاع</option>
           <option value="moi">وزارة الداخلية</option>
           <option value="emergency_forces">قوات الطوارئ الخاصة</option>
