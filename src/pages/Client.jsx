@@ -263,7 +263,7 @@ const ClientForm = () => {
 
                                 {isChecked && diploma.type !== "hybrid" && (
                                   <p className="text-sm mt-1">
-                                    نوع التنفيذ: <strong>{diploma.type === "waf" ? "واف" : "أونلاين"}</strong>
+                                    نوع التنفيذ: <strong>{diploma.type === "offline" ? "اوف لاين" : "أونلاين"}</strong>
                                   </p>
                                 )}
                               </div>
