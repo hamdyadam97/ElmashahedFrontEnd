@@ -18,34 +18,64 @@ const ClientForm = () => {
   const [success, setSuccess] = useState(false);
   console.log(diplomas, 'ssssssssssssssssssss')
   const initialValues = {
-    name: "",
+    first_name: "",
+    second_name: "",
+    third_name: "",
+    fourth_name: "",
     identity_number: "",
     phone_number: "",
     email: "",
     sector: "",
     area: "",
     institute: "",
-    diplomas_ids: [],
+    diploma_id: "",
   };
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required("مطلوب"),
-    identity_number: Yup.string()
-      .matches(/^\d{10}$/, "رقم الهوية يجب أن يكون 10 أرقام")
-      .required("مطلوب"),
-    phone_number: Yup.string()
-      .matches(/^[+]?[\d\s-()]{10,15}$/, "رقم الهاتف غير صحيح")
-      .required("مطلوب"),
-    email: Yup.string().email("بريد إلكتروني غير صالح").required("مطلوب"),
-    sector: Yup.string().required("مطلوب"),
-    area: Yup.string().required("مطلوب"),
-    institute: Yup.string().required("مطلوب"), // بدل area
-  });
+const validationSchema = Yup.object({
+  first_name: Yup.string()
+    .min(3, "يجب أن يكون 3 أحرف على الأقل")
+    .required("مطلوب"),
+
+  second_name: Yup.string()
+    .min(3, "يجب أن يكون 3 أحرف على الأقل")
+    .required("مطلوب"),
+
+  third_name: Yup.string()
+    .min(3, "يجب أن يكون 3 أحرف على الأقل")
+    .required("مطلوب"),
+
+  fourth_name: Yup.string()
+    .min(3, "يجب أن يكون 3 أحرف على الأقل")
+    .required("مطلوب"),
+
+  identity_number: Yup.string()
+    .matches(/^\d{10}$/, "رقم الهوية يجب أن يكون 10 أرقام")
+    .required("مطلوب"),
+
+  phone_number: Yup.string()
+    .matches(/^[+]?[\d\s-()]{10,15}$/, "رقم الهاتف غير صحيح")
+    .required("مطلوب"),
+
+  email: Yup.string()
+    .email("بريد إلكتروني غير صالح")
+    .required("مطلوب"),
+
+  sector: Yup.string().required("مطلوب"),
+  area: Yup.string().required("مطلوب"),
+  institute: Yup.string().required("مطلوب"),
+  diploma_id: Yup.string().required("اختيار الدبلوم مطلوب"),
+});
+
 
 
 
   const handleSubmit = (values, { resetForm }) => {
-    dispatch(createClient(values))
+    const name = `${values.first_name} ${values.second_name} ${values.third_name} ${values.fourth_name}`;
+    const dataToSend = {
+      ...values,
+      name,         // إضافة الاسم الكامل
+    };
+    dispatch(createClient(dataToSend))
       .unwrap()
       .then((data) => {
         setSuccess(true);       // إظهار رسالة النجاح
@@ -87,15 +117,48 @@ const ClientForm = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="form-group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">الاسم الكامل <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">الاسم الاؤل <span className="text-red-500">*</span></label>
                     <Field
-                      name="name"
+                      name="first_name"
                       type="text"
-                      placeholder="أدخل الاسم الكامل"
+                      placeholder="أدخل الاسم الاؤل"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
-                    <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
+                    <ErrorMessage name="first_name" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
+                  <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">اسم الاب  <span className="text-red-500">*</span></label>
+                    <Field
+                      name="second_name"
+                      type="text"
+                      placeholder="أدخل الاسم الثانى"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <ErrorMessage name="second_name" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">اسم الجد  <span className="text-red-500">*</span></label>
+                    <Field
+                      name="third_name"
+                      type="text"
+                      placeholder="أدخل الاسم الثالث"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <ErrorMessage name="third_name" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">اسم العائلة  <span className="text-red-500">*</span></label>
+                    <Field
+                      name="fourth_name"
+                      type="text"
+                      placeholder="أدخل الاسم الرابع"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <ErrorMessage name="fourth_name" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+
 
                   <div className="form-group">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">رقم الهوية <span className="text-red-500">*</span></label>
@@ -109,7 +172,7 @@ const ClientForm = () => {
                   </div>
 
                   <div className="form-group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">رقم الهاتف <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">رقم الجوال  <span className="text-red-500">*</span></label>
                     <Field
                       name="phone_number"
                       type="tel"
@@ -163,28 +226,17 @@ const ClientForm = () => {
                   </div>
 
                   <div className="form-group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">المنطقة <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">المدينة <span className="text-red-500">*</span></label>
+                   
+                       <div className="form-group">
                     <Field
-                      as="select"
                       name="area"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
-                    >
-                      <option value="">اختر المنطقة</option>
-                      <option value="riyadh">الرياض</option>
-                      <option value="makkah">مكة المكرمة</option>
-                      <option value="madinah">المدينة المنورة</option>
-                      <option value="qassim">القصيم</option>
-                      <option value="eastern">المنطقة الشرقية</option>
-                      <option value="asir">عسير</option>
-                      <option value="tabuk">تبوك</option>
-                      <option value="hail">حائل</option>
-                      <option value="north_border">الحدود الشمالية</option>
-                      <option value="jazan">جازان</option>
-                      <option value="najran">نجران</option>
-                      <option value="baha">الباحة</option>
-                      <option value="jouf">الجوف</option>
-                    </Field>
+                      type="text"
+                      placeholder="أدخل اسم  المدينة"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
                     <ErrorMessage name="area" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
                   </div>
 
                   <div className="form-group">
@@ -219,67 +271,70 @@ const ClientForm = () => {
                   <div className="border border-gray-300 rounded-lg p-4 multi-select bg-gray-50">
 
 
-                    <FieldArray name="diplomas_ids">
-                      {({ push, remove, form }) => (
-                        <div>
-                          {diplomas.map((diploma) => {
-                            const index = form.values.diplomas_ids.findIndex(d => d.id === diploma.id);
-                            const isChecked = index !== -1;
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        الشهادات والدبلومات
+                      </h2>
 
-                            return (
-                              <div key={diploma.id} className="p-3 border rounded mb-2">
-                                <label className="flex items-center cursor-pointer">
-                                  <input
-                                    type="checkbox"
-                                    checked={isChecked}
-                                    onChange={() => {
-                                      if (isChecked) {
-                                        remove(index);
-                                      } else {
-                                        push({
-                                          id: diploma.id,
-                                          name: diploma.name,
-                                          type: diploma.type,
-                                          selectedType: diploma.type === "hybrid" ? "" : diploma.type
-                                        });
-                                      }
-                                    }}
-                                    className="mr-2"
-                                  />
-                                  {diploma.name}
-                                </label>
+                      <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                        {diplomas.map((diploma) => {
+                          const selected = values.diploma_id === diploma.id;
 
-                                {isChecked && diploma.type === "hybrid" && (
-                                  <Field
-                                    as="select"
-                                    name={`diplomas_ids.${index}.selectedType`}
-                                    className="mt-2 border px-2 py-1 rounded"
-                                  >
-                                    <option value="">اختر النوع</option>
-                                    <option value="hadiri">حضوري</option>
-                                    <option value="online">أونلاين</option>
-                                  </Field>
-                                )}
+                          return (
+                            <div key={diploma.id} className="p-3 border rounded mb-2">
 
-                                {isChecked && diploma.type !== "hybrid" && (
-                                  <p className="text-sm mt-1">
-                                    نوع التنفيذ: <strong>{diploma.type === "offline" ? "اوف لاين" : "أونلاين"}</strong>
-                                  </p>
-                                )}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )}
-                    </FieldArray>
+                              {/* اختيار الدبلوم */}
+                              <label className="flex items-center cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name="diploma_id"
+                                  value={diploma.id}
+                                  checked={selected}
+                                  onChange={() => {
+                                    setFieldValue("diploma_id", diploma.id);
+
+                                    // تعيين selectedType لو نوع ثابت
+                                    if (diploma.type !== "hybrid") {
+                                      setFieldValue("selectedType", diploma.type);
+                                    } else {
+                                      setFieldValue("selectedType", "");
+                                    }
+                                  }}
+                                  className="mr-2"
+                                />
+                                {diploma.name}
+                              </label>
+
+                              {/* لو Hybrid → يظهر اختيار النوع */}
+                              {selected && diploma.type === "hybrid" && (
+                                <Field
+                                  as="select"
+                                  name="selectedType"
+                                  className="mt-2 border px-2 py-1 rounded"
+                                >
+                                  <option value="">اختر النوع</option>
+                                  <option value="hadiri">حضوري</option>
+                                  <option value="online">أونلاين</option>
+                                </Field>
+                              )}
+
+                              {/* لو ثابت النوع */}
+                              {selected && diploma.type !== "hybrid" && (
+                                <p className="text-sm mt-1">
+                                  نوع التنفيذ:
+                                  <strong>{diploma.type === "offline" ? " حضوري" : " أونلاين"}</strong>
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
 
 
 
-                    {values.diplomas_ids.length > 0 && (
-                      <p className="mt-2 text-gray-600">
-                        تم اختيار {values.diplomas_ids.length} دبلومات
-                      </p>
-                    )}
+
+
                   </div>
                 </div>
 
