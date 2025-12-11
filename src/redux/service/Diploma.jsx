@@ -1,12 +1,12 @@
 
 import api from "../../api/Api"; 
 
-export const fetchDiplomas = async () => {
-  const res = await api.get("user/diplomas/");
+export const fetchDiplomas = async (type) => {
+  const res = await api.get(`user/diplomas/?type=${type}`);
+  console.log(res,'ssssssssssssssssssssssssssssssssssssssssssssss')
   return res.data.data;
 };
 // services/productService.js
-
 
 
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDiplomas } from '../redux/slice/Diploma';
 import { createClient } from "../redux/slice/Client";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.jpg";
 // بيانات الدبلومات كمثال
 
 const ClientForm = () => {
@@ -12,12 +13,13 @@ const ClientForm = () => {
     useSelector((state) => state.diploma || {});
   const dispatch = useDispatch();
   const navigate = useNavigate(); // تعريف navigate
-  useEffect(() => {
-    dispatch(fetchDiplomas());
-  }, [dispatch]);
-  const [success, setSuccess] = useState(false);
-  console.log(diplomas, 'ssssssssssssssssssss')
-  const initialValues = {
+  const [selectedType, setSelectedType] = useState("diploma");
+
+useEffect(() => {
+  dispatch(fetchDiplomas(selectedType));
+}, [dispatch, selectedType]);
+
+  const [success, setSuccess] = useState(false);  const initialValues = {
     first_name: "",
     second_name: "",
     third_name: "",
@@ -94,12 +96,16 @@ const validationSchema = Yup.object({
     <div className="gradient-bg min-h-screen py-8 px-4 flex justify-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden p-8">
         <div className="text-center mb-8">
-          <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <svg className="w-10 h-10 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-            </svg>
+         
+           <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
+<img src={logo} alt="logo" className="w-12 h-12 object-contain" />
+
+
+
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">إضافة مشهد جديد</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2"> 
+
+مجموعة معاهد الفاو والاهلي العليا للتدريب</h1>
           <p className="text-gray-600 text-lg">املأ البيانات التالية لإضافة مشهد جديد إلى النظام</p>
         </div>
 
@@ -209,7 +215,7 @@ const validationSchema = Yup.object({
                       <option value=""> اختر قطاع</option>
                       <option value="mod">وزارة الدفاع</option>
                       <option value="moi">وزارة الداخلية</option>
-                      <option value="emergency_forces">قوات الطوارئ الخاصة</option>
+                      <option value="emergency_forces">  رئاسة امن الدولة</option>
                       <option value="security_forces">قوات أمن المنشآت</option>
                       <option value="passports">الإدارة العامة للجوازات</option>
                       <option value="industrial_security">الهيئة العليا لأمن الصناعي</option>
@@ -258,7 +264,20 @@ const validationSchema = Yup.object({
                     </Field>
                     <ErrorMessage name="institute" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
+<div className="form-group">
+  <label className="block text-sm font-semibold text-gray-700 mb-2">
+    نوع البرنامج <span className="text-red-500">*</span>
+  </label>
 
+  <select
+    value={selectedType}
+    onChange={(e) => setSelectedType(e.target.value)}
+    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+  >
+    <option value="diploma">دبلوم</option>
+    <option value="cource">كورس</option>
+  </select>
+</div>
                 </div>
               </div>
 

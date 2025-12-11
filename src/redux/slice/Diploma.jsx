@@ -5,17 +5,20 @@ import { diolomaModel } from "../../models/Diploma";
 
 // جلب التصنيفات
 export const fetchDiplomas = createAsyncThunk(
-  "diploma/",
-  async (_, thunkAPI) => {
+  "diploma/fetch",
+  async (type, thunkAPI) => {
     try {
-      const data = await diplomaService.fetchDiplomas();
+      const data = await diplomaService.fetchDiplomas(type);
       const diplomaList = data.map((dip) => diolomaModel(dip));
       return diplomaList;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "فشل تحميل التصنيفات");
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "فشل تحميل التصنيفات"
+      );
     }
   }
 );
+
 
 
 const diplomaSlice = createSlice({
