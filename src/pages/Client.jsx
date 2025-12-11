@@ -15,11 +15,11 @@ const ClientForm = () => {
   const navigate = useNavigate(); // تعريف navigate
   const [selectedType, setSelectedType] = useState("diploma");
 
-useEffect(() => {
-  dispatch(fetchDiplomas(selectedType));
-}, [dispatch, selectedType]);
+  useEffect(() => {
+    dispatch(fetchDiplomas(selectedType));
+  }, [dispatch, selectedType]);
 
-  const [success, setSuccess] = useState(false);  const initialValues = {
+  const [success, setSuccess] = useState(false); const initialValues = {
     first_name: "",
     second_name: "",
     third_name: "",
@@ -33,40 +33,40 @@ useEffect(() => {
     diploma_id: "",
   };
 
-const validationSchema = Yup.object({
-  first_name: Yup.string()
-    .min(3, "يجب أن يكون 3 أحرف على الأقل")
-    .required("مطلوب"),
+  const validationSchema = Yup.object({
+    first_name: Yup.string()
+      .min(3, "يجب أن يكون 3 أحرف على الأقل")
+      .required("مطلوب"),
 
-  second_name: Yup.string()
-    .min(3, "يجب أن يكون 3 أحرف على الأقل")
-    .required("مطلوب"),
+    second_name: Yup.string()
+      .min(3, "يجب أن يكون 3 أحرف على الأقل")
+      .required("مطلوب"),
 
-  third_name: Yup.string()
-    .min(3, "يجب أن يكون 3 أحرف على الأقل")
-    .required("مطلوب"),
+    third_name: Yup.string()
+      .min(3, "يجب أن يكون 3 أحرف على الأقل")
+      .required("مطلوب"),
 
-  fourth_name: Yup.string()
-    .min(3, "يجب أن يكون 3 أحرف على الأقل")
-    .required("مطلوب"),
+    fourth_name: Yup.string()
+      .min(3, "يجب أن يكون 3 أحرف على الأقل")
+      .required("مطلوب"),
 
-  identity_number: Yup.string()
-    .matches(/^\d{10}$/, "رقم الهوية يجب أن يكون 10 أرقام")
-    .required("مطلوب"),
+    identity_number: Yup.string()
+      .matches(/^\d{10}$/, "رقم الهوية يجب أن يكون 10 أرقام")
+      .required("مطلوب"),
 
-  phone_number: Yup.string()
-    .matches(/^[+]?[\d\s-()]{10,15}$/, "رقم الهاتف غير صحيح")
-    .required("مطلوب"),
+    phone_number: Yup.string()
+      .matches(/^[+]?[\d\s-()]{10,15}$/, "رقم الهاتف غير صحيح")
+      .required("مطلوب"),
 
-  email: Yup.string()
-    .email("بريد إلكتروني غير صالح")
-    .required("مطلوب"),
+    email: Yup.string()
+      .email("بريد إلكتروني غير صالح")
+      .required("مطلوب"),
 
-  sector: Yup.string().required("مطلوب"),
-  area: Yup.string().required("مطلوب"),
-  institute: Yup.string().required("مطلوب"),
-  diploma_id: Yup.string().required("اختيار الدبلوم مطلوب"),
-});
+    sector: Yup.string().required("مطلوب"),
+    area: Yup.string().required("مطلوب"),
+    institute: Yup.string().required("مطلوب"),
+    diploma_id: Yup.string().required("اختيار الدبلوم مطلوب"),
+  });
 
 
 
@@ -96,16 +96,16 @@ const validationSchema = Yup.object({
     <div className="gradient-bg min-h-screen py-8 px-4 flex justify-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden p-8">
         <div className="text-center mb-8">
-         
-           <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
-<img src={logo} alt="logo" className="w-12 h-12 object-contain" />
+
+          <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <img src={logo} alt="logo" className="w-12 h-12 object-contain" />
 
 
 
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2"> 
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
 
-مجموعة معاهد الفاو والاهلي العليا للتدريب</h1>
+            مجموعة معاهد الفاو والاهلي العليا للتدريب</h1>
           <p className="text-gray-600 text-lg">املأ البيانات التالية لإضافة مشهد جديد إلى النظام</p>
         </div>
 
@@ -233,16 +233,16 @@ const validationSchema = Yup.object({
 
                   <div className="form-group">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">المدينة <span className="text-red-500">*</span></label>
-                   
-                       <div className="form-group">
-                    <Field
-                      name="area"
-                      type="text"
-                      placeholder="أدخل اسم  المدينة"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    />
-                    <ErrorMessage name="area" component="div" className="text-red-500 text-sm mt-1" />
-                  </div>
+
+                    <div className="form-group">
+                      <Field
+                        name="area"
+                        type="text"
+                        placeholder="أدخل اسم  المدينة"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                      <ErrorMessage name="area" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
                   </div>
 
                   <div className="form-group">
@@ -264,20 +264,20 @@ const validationSchema = Yup.object({
                     </Field>
                     <ErrorMessage name="institute" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
-<div className="form-group">
-  <label className="block text-sm font-semibold text-gray-700 mb-2">
-    نوع البرنامج <span className="text-red-500">*</span>
-  </label>
+                  <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      نوع البرنامج <span className="text-red-500">*</span>
+                    </label>
 
-  <select
-    value={selectedType}
-    onChange={(e) => setSelectedType(e.target.value)}
-    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-  >
-    <option value="diploma">دبلوم</option>
-    <option value="cource">كورس</option>
-  </select>
-</div>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    >
+                      <option value="diploma">دبلوم</option>
+                      <option value="cource">كورس</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 

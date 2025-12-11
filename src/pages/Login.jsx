@@ -1,4 +1,4 @@
-import React,{useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,10 +8,10 @@ import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, user  } = useSelector((state) => state.auth);
+  const { loading, error, user } = useSelector((state) => state.auth);
 
   const initialValues = {
-    identity_number: "",
+    identifier: "",
     password: ""
   };
 
@@ -19,42 +19,37 @@ const Login = () => {
 
 
   const validationSchema = Yup.object({
-    identity_number: Yup.string()
-      .matches(/^[12]\d{9}$/, "رقم الهوية غير صالح")
-      .required("مطلوب"),
-    password: Yup.string().required("مطلوب"),
+    identifier: Yup.string()
+      .required("مطلوب")
+      .test(
+        "email-or-id",
+        "يجب إدخال بريد إلكتروني صحيح أو رقم هوية صالح",
+        (value) => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const idRegex = /^[1]\d{9}$/;  // رقم هوية سعودي يبدأ بـ 1 أو 2 ويحتوي 10 أرقام
+          return emailRegex.test(value) || idRegex.test(value);
+        }
+      ),
   });
 
-  // const handleSubmit = (values, { resetForm }) => {
-  //   dispatch(loginUser(values))
-  //     .unwrap()
-  //     .then(() => {
-       
-  //       console.log('ddddddddddddddddddddddddddddddddddddddddddddddddddd')
-  //       navigate("/client");
-  //     })
-  //     .catch(() => {
-  //       // هنا ممكن تتعامل مع الخطأ لو حابب
-  //     });
-  //   resetForm();
-  // };
 
 
 
-const { login } = useAuth();
 
-const handleSubmit = async (values, { resetForm, setSubmitting }) => {
-  try {
-    const userData = await dispatch(loginUser(values)).unwrap();
-    login(userData); // هنا تحدث الـ Context
-    navigate("/");
-    resetForm();
-  } catch (err) {
-    console.log("خطأ في تسجيل الدخول:", err);
-  } finally {
-    setSubmitting(false);
-  }
-};
+  const { login } = useAuth();
+
+  const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    try {
+      const userData = await dispatch(loginUser(values)).unwrap();
+      login(userData); // هنا تحدث الـ Context
+      navigate("/");
+      resetForm();
+    } catch (err) {
+      console.log("خطأ في تسجيل الدخول:", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
 
 
@@ -66,7 +61,7 @@ const handleSubmit = async (values, { resetForm, setSubmitting }) => {
           <div className="lg:w-1/2 bg-gradient-to-br from-blue-500 to-purple-600 p-8 flex items-center justify-center">
             <div className="text-center text-white">
               <svg className="w-32 h-32 mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.1 3.89 23 5 23H11V21H5V19H7V17H5V15H9V13H5V11H7V9H5V7H13V9H21ZM15 15V13H17V11H19V13H21V15H19V17H17V15H15ZM13 17H15V19H13V17Z"/>
+                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.1 3.89 23 5 23H11V21H5V19H7V17H5V15H9V13H5V11H7V9H5V7H13V9H21ZM15 15V13H17V11H19V13H21V15H19V17H17V15H15ZM13 17H15V19H13V17Z" />
               </svg>
               <h2 className="text-3xl font-bold mb-4">مرحباً بك</h2>
               <p className="text-lg opacity-90">سجّل دخولك للمتابعة</p>
@@ -86,16 +81,17 @@ const handleSubmit = async (values, { resetForm, setSubmitting }) => {
                 <Form className="space-y-4">
                   {/* Identity Number */}
                   <div>
-                    <label htmlFor="identity_number" className="block text-sm font-medium text-gray-700 mb-1">
-                      رقم الهوية
+                    <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
+                      او البريد  رقم الهوية
                     </label>
                     <Field
-                      name="identity_number"
+                      name="identifier"
                       type="text"
-                      placeholder="أدخل رقم الهوية"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="أدخل البريد الإلكتروني أو رقم الهوية"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
-                    <ErrorMessage name="identity_number" component="div" className="text-red-500 text-sm mt-1"/>
+                    <ErrorMessage name="identifier" component="div" className="text-red-500 text-sm mt-1" />
+
                   </div>
 
                   {/* Password */}
@@ -109,7 +105,7 @@ const handleSubmit = async (values, { resetForm, setSubmitting }) => {
                       placeholder="أدخل كلمة المرور"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
-                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1"/>
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
 
                   {/* Submit */}
