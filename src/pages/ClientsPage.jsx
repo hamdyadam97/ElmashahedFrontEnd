@@ -22,7 +22,7 @@ const ClientsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   // جلب البيانات من الـ API عند كل تغيير في الفلاتر أو الصفحة
   const loadClients = () => {
@@ -156,7 +156,7 @@ const API_BASE = process.env.REACT_APP_API_BASE_URL;
                 {/* <button onClick={() => handleDelete(client.id)} className="text-red-600">حذف</button> */}
                 <div className="flex gap-2 mt-4">
                   <a
-                    href={`${API_BASE}/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
+                    href={`http://89.116.228.76:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
 
                     target="_blank"
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -165,7 +165,7 @@ const API_BASE = process.env.REACT_APP_API_BASE_URL;
                   </a>
                   
                   <a
-                    href={`${API_BASE}/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
+                    href={`http://89.116.228.76:8000/api/user/client/${client.id}/diploma/${client.diploma.id}/pdf/`}
                     download={`client_${client.id}.pdf`}
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                   >

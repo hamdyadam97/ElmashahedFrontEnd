@@ -95,14 +95,14 @@ const NewClientsPage = () => {
                                         {newClient.diplomas?.map((d) => (
                                             <React.Fragment key={d.id}>
                                                 <a
-                                                    href={`${API_BASE}/user/client/${newClient.id}/diploma/${d.id}/pdf/`}
+                                                    href={`http://89.116.228.76:8000/api/user/client/${newClient.id}/diploma/${d.id}/pdf/`}
                                                     target="_blank"
                                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                                                 >
                                                     عرض {d.name}
                                                 </a>
                                                 <a
-                                                    href={`${API_BASE}/user/client/${newClient.id}/diploma/${d.id}/pdf/`}
+                                                    href={`http://89.116.228.76:8000/api/user/client/${newClient.id}/diploma/${d.id}/pdf/`}
                                                     download={`client_${newClient.id}_${d.id}.pdf`}
                                                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                                                 >

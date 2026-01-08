@@ -122,16 +122,7 @@ const ClientForm = () => {
                   المعلومات الشخصية
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="form-group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">الاسم الاؤل <span className="text-red-500">*</span></label>
-                    <Field
-                      name="first_name"
-                      type="text"
-                      placeholder="أدخل الاسم الاؤل"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    />
-                    <ErrorMessage name="first_name" component="div" className="text-red-500 text-sm mt-1" />
-                  </div>
+                 
                   <div className="form-group">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">اسم الاب  <span className="text-red-500">*</span></label>
                     <Field
@@ -141,6 +132,26 @@ const ClientForm = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                     <ErrorMessage name="second_name" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+                   <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">الاسم الاؤل <span className="text-red-500">*</span></label>
+                    <Field
+                      name="first_name"
+                      type="text"
+                      placeholder="أدخل الاسم الاؤل"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <ErrorMessage name="first_name" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+                    <div className="form-group">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">اسم العائلة  <span className="text-red-500">*</span></label>
+                    <Field
+                      name="fourth_name"
+                      type="text"
+                      placeholder="أدخل الاسم الرابع"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <ErrorMessage name="fourth_name" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
 
                   <div className="form-group">
@@ -154,16 +165,7 @@ const ClientForm = () => {
                     <ErrorMessage name="third_name" component="div" className="text-red-500 text-sm mt-1" />
                   </div>
 
-                  <div className="form-group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">اسم العائلة  <span className="text-red-500">*</span></label>
-                    <Field
-                      name="fourth_name"
-                      type="text"
-                      placeholder="أدخل الاسم الرابع"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    />
-                    <ErrorMessage name="fourth_name" component="div" className="text-red-500 text-sm mt-1" />
-                  </div>
+                
 
 
                   <div className="form-group">
