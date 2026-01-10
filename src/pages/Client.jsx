@@ -277,7 +277,7 @@ const ClientForm = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     >
                       <option value="diploma">دبلوم</option>
-                      <option value="cource">كورس</option>
+                      <option value="cource">دورة</option>
                     </select>
                   </div>
                 </div>
